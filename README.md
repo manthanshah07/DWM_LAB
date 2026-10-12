@@ -1,7 +1,17 @@
 # Stock Market Analysis System - DWM Lab & Mini Project
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://dwmlab-hrhimxnpqpgyhkvdgg3hne.streamlit.app/)
+
 **Course:** Data Warehousing & Mining (`PCIT10T` / `PCIT10P`) — Semester V  
 **Dataset:** `stock_market_data.csv` (3 Years of Daily NSE Trading Data across 20 Major Indian Stocks & 5 Sectors)
+
+---
+
+## 🌐 Live Demo
+
+The **Stock Market Analysis System** is hosted and accessible online for grading and interactive review:
+
+👉 **[Launch Live Streamlit Dashboard: https://dwmlab-hrhimxnpqpgyhkvdgg3hne.streamlit.app/](https://dwmlab-hrhimxnpqpgyhkvdgg3hne.streamlit.app/)**
 
 ---
 
