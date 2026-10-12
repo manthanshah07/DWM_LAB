@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DWM Lab 02 – Manthan Shah</title>
+
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: 'Times New Roman', serif; margin: 0; padding: 0;
+         background: #fff; color: #111; font-size: 12pt; }
+  .page-wrapper { padding: 18mm 20mm 15mm 20mm; }
+
+  /* ── Institute header ── */
+  .inst-header { text-align: center; border-bottom: 2px solid #1a237e;
+                 padding-bottom: 8px; margin-bottom: 12px; }
+  .inst-header .inst-name { font-size: 18pt; font-weight: bold;
+                             color: #1a237e; letter-spacing: 0.5px; }
+  .inst-header .inst-sub  { font-size: 10pt; color: #555; margin-top: 2px; }
+  .inst-header .dept-name { font-size: 13pt; font-weight: bold; color: #b71c1c;
+                             margin-top: 4px; }
+
+  /* ── Metadata table ── */
+  .meta-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; }
+  .meta-table td { border: 1px solid #333; padding: 5px 8px; font-size: 10.5pt; }
+  .meta-table .label { font-weight: bold; width: 32%; background: #e8eaf6; }
+
+  /* ── Section headings ── */
+  h2 { font-size: 13pt; color: #1a237e; border-bottom: 1px solid #1a237e;
+       padding-bottom: 3px; margin-top: 18px; }
+  h3 { font-size: 11.5pt; color: #b71c1c; margin-top: 14px; }
+
+  /* ── Code blocks ── */
+  pre  { background: #f5f5f5; border: 1px solid #ccc; border-left: 4px solid #1a237e;
+         padding: 10px 14px; font-family: 'Courier New', monospace; font-size: 9pt;
+         overflow-x: auto; white-space: pre-wrap; word-break: break-word; }
+  code { font-family: 'Courier New', monospace; font-size: 9pt; }
+
+  /* ── Result tables ── */
+  .result-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 9.5pt; }
+  .result-table th { background: #1a237e; color: #fff; padding: 5px 8px; text-align: left; }
+  .result-table td { border: 1px solid #bbb; padding: 4px 8px; }
+  .result-table tr:nth-child(even) td { background: #f0f4ff; }
+
+  /* ── ER diagram images ── */
+  .er-img { display: block; margin: 14px auto; max-width: 100%;
+            border: 1px solid #ccc; border-radius: 4px; }
+
+  /* ── Conclusion box ── */
+  .conclusion { background: #e8f5e9; border-left: 5px solid #2e7d32;
+                padding: 10px 14px; margin-top: 16px; border-radius: 3px; }
+
+  @media print {
+    .page-wrapper { padding: 10mm 14mm 10mm 14mm; }
+  }
+</style>
+
+</head>
+<body>
+<div class="page-wrapper">
+
+<!-- ── Institute Header ── -->
+<div class="inst-header">
+  <div class="inst-name">Vidyalankar Institute of Technology (VIT)</div>
+  <div class="inst-sub">Wadala (W), Mumbai – 400 037  |  Accredited A+ by NAAC</div>
+  <div class="dept-name">Department of Information Technology</div>
+</div>
+
+<!-- ── Metadata Table ── -->
+<table class="meta-table">
+  <tr>
+    <td class="label">Subject</td>
+    <td colspan="3">Data Warehousing and Mining (DWM – PCIT10T / PCIT10P)</td>
+  </tr>
+  <tr>
+    <td class="label">Experiment No.</td>
+    <td>02</td>
+    <td class="label">Semester / Division</td>
+    <td>T.E. Semester V  |  TEINFT - A  (Odd Sem 2026-2027)</td>
+  </tr>
+  <tr>
+    <td class="label">Laboratory Batch</td>
+    <td>Batch - 3</td>
+    <td class="label">Date of Performance</td>
+    <td>—</td>
+  </tr>
+  <tr>
+    <td class="label">Student 1</td>
+    <td>Manthan Shah  (Roll No: 24101A0078)</td>
+    <td class="label">Student 2</td>
+    <td>Ishan Gurav  (Roll No: 24101A0077)</td>
+  </tr>
+  <tr>
+    <td class="label">Professor In-charge</td>
+    <td colspan="3">Dr. Varsha Bhosale</td>
+  </tr>
+</table>
+
+<h1 style="text-align:center;font-size:14pt;color:#1a237e;margin-bottom:6px;">
+  Experiment 02: OLAP Operations on the Dimensional Model
+</h1>
+
+<h2>1. Aim / Objective</h2>
+<p>
+To perform standard OLAP (Online Analytical Processing) operations — <strong>Slice, Dice,
+Roll-Up, Drill-Down, Pivot,</strong> and <strong>Drill-Across</strong> — on the Stock Market
+Data Warehouse built in Experiment 01, using SQL queries executed against a SQLite in-memory
+warehouse populated from <code>stock_market_data.csv</code>.
+</p>
+
+<h2>2. Theory</h2>
+
+<h3>2.1 OLAP Concepts</h3>
+<p>
+OLAP enables multidimensional analysis of business data.  Operations traverse the
+<em>data cube</em> defined by the warehouse dimensions (Time, Stock, Exchange).
+</p>
+<table class="result-table" style="margin-bottom:12px;">
+  <thead><tr><th>Operation</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Slice</strong></td><td>Selects a single value of one dimension, producing a sub-cube.</td></tr>
+    <tr><td><strong>Dice</strong></td><td>Applies range/value filters on two or more dimensions.</td></tr>
+    <tr><td><strong>Roll-Up</strong></td><td>Aggregates data up a hierarchy (Month → Quarter → Year).</td></tr>
+    <tr><td><strong>Drill-Down</strong></td><td>Decomposes aggregated data to a finer granularity.</td></tr>
+    <tr><td><strong>Pivot</strong></td><td>Rotates the data cube to present a cross-tabulated view.</td></tr>
+    <tr><td><strong>Drill-Across</strong></td><td>Queries across multiple fact tables sharing conformed dimensions.</td></tr>
+  </tbody>
+</table>
+
+<h2>3. OLAP Query Results</h2>
+
+<h3>3.1  Slice Operation</h3>
+<p><em>Extracts a single dimension value — all trades for the NSE exchange.</em></p>
+<pre>SELECT t.Year, s.Ticker, s.Sector,
+       ROUND(AVG(f.Close_Price), 2)   AS Avg_Close,
+       ROUND(AVG(f.Daily_Return), 4)  AS Avg_Return,
+       SUM(f.Volume)                  AS Total_Volume
+  FROM Fact_DailyTrades f
+  JOIN Dim_Time     t ON f.Time_Key     = t.Time_Key
+  JOIN Dim_Stock    s ON f.Stock_Key    = s.Stock_Key
+  JOIN Dim_Exchange e ON f.Exchange_Key = e.Exchange_Key
+ WHERE e.Exchange = 'NSE'
+ GROUP BY t.Year, s.Ticker, s.Sector
+ ORDER BY t.Year, s.Ticker
+ LIMIT 10;</pre>
+<p><strong>Result:</strong></p>
+<table class="result-table">
+<thead><tr><th>Year</th><th>Ticker</th><th>Sector</th><th>Avg_Close</th><th>Avg_Return</th><th>Total_Volume</th></tr></thead>
+<tbody><tr><td>2023</td><td>BAJAJ-AUTO</td><td>Auto</td><td>5531.28</td><td>0.3692</td><td>26873761</td></tr>
+<tr><td>2023</td><td>BRITANNIA</td><td>FMCG</td><td>4574.6</td><td>0.2342</td><td>17371937</td></tr>
+<tr><td>2023</td><td>HCLTECH</td><td>IT</td><td>1191.07</td><td>0.1342</td><td>129286188</td></tr>
+<tr><td>2023</td><td>HDFCBANK</td><td>Banking</td><td>747.83</td><td>0.0275</td><td>1728255410</td></tr>
+<tr><td>2023</td><td>HINDUNILVR</td><td>FMCG</td><td>2400.49</td><td>0.1179</td><td>83087327</td></tr>
+<tr><td>2023</td><td>ICICIBANK</td><td>Banking</td><td>936.7</td><td>0.0062</td><td>721050143</td></tr>
+<tr><td>2023</td><td>INFY</td><td>IT</td><td>1334.7</td><td>0.0834</td><td>294771285</td></tr>
+<tr><td>2023</td><td>ITC</td><td>FMCG</td><td>381.75</td><td>-0.0942</td><td>557655398</td></tr>
+<tr><td>2023</td><td>KOTAKBANK</td><td>Banking</td><td>355.43</td><td>0.0283</td><td>877373290</td></tr>
+<tr><td>2023</td><td>M&M</td><td>Auto</td><td>1551.88</td><td>0.027</td><td>129424567</td></tr>
+</tbody>
+</table>
+
+<h3>3.2  Dice Operation</h3>
+<p><em>Applies filters on two+ dimensions — IT sector stocks in 2023 with positive returns.</em></p>
+<pre>SELECT t.Year, t.Quarter, s.Ticker, s.Sector,
+       ROUND(AVG(f.Close_Price), 2)   AS Avg_Close,
+       ROUND(AVG(f.Daily_Return), 4)  AS Avg_Return,
+       SUM(f.Volume)                  AS Total_Volume
+  FROM Fact_DailyTrades f
+  JOIN Dim_Time  t ON f.Time_Key  = t.Time_Key
+  JOIN Dim_Stock s ON f.Stock_Key = s.Stock_Key
+ WHERE s.Sector = 'IT'
+   AND t.Year   = 2023
+   AND f.Daily_Return > 0
+ GROUP BY t.Year, t.Quarter, s.Ticker
+ ORDER BY t.Quarter, Avg_Return DESC
+ LIMIT 10;</pre>
+<p><strong>Result:</strong></p>
+<table class="result-table">
+<thead><tr><th>Year</th><th>Quarter</th><th>Ticker</th><th>Sector</th><th>Avg_Close</th><th>Avg_Return</th><th>Total_Volume</th></tr></thead>
+<tbody><tr><td>2023</td><td>4</td><td>WIPRO</td><td>IT</td><td>196.22</td><td>1.6579</td><td>388519914</td></tr>
+<tr><td>2023</td><td>4</td><td>HCLTECH</td><td>IT</td><td>1200.61</td><td>1.0567</td><td>77767475</td></tr>
+<tr><td>2023</td><td>4</td><td>INFY</td><td>IT</td><td>1344.17</td><td>1.0012</td><td>164525356</td></tr>
+<tr><td>2023</td><td>4</td><td>TCS</td><td>IT</td><td>3268.61</td><td>0.8569</td><td>53685670</td></tr>
+</tbody>
+</table>
+
+<h3>3.3  Roll-Up Operation</h3>
+<p><em>Aggregates from Month → Quarter → Year hierarchy.</em></p>
+<pre>SELECT t.Year, t.Quarter,
+       ROUND(AVG(f.Close_Price),  2)  AS Avg_Close,
+       ROUND(AVG(f.Daily_Return), 4)  AS Avg_Daily_Return,
+       SUM(f.Volume)                  AS Total_Volume,
+       COUNT(*)                       AS Trade_Days
+  FROM Fact_DailyTrades f
+  JOIN Dim_Time t ON f.Time_Key = t.Time_Key
+ GROUP BY t.Year, t.Quarter
+ ORDER BY t.Year, t.Quarter
+ LIMIT 12;</pre>
+<p><strong>Result:</strong></p>
+<table class="result-table">
+<thead><tr><th>Year</th><th>Quarter</th><th>Avg_Close</th><th>Avg_Daily_Return</th><th>Total_Volume</th><th>Trade_Days</th></tr></thead>
+<tbody><tr><td>2023.0</td><td>4.0</td><td>1839.23</td><td>0.0597</td><td>9774429862.0</td><td>1060.0</td></tr>
+<tr><td>2024.0</td><td>1.0</td><td>2060.93</td><td>-0.0139</td><td>15577733283.0</td><td>1200.0</td></tr>
+<tr><td>2024.0</td><td>2.0</td><td>2235.85</td><td>-0.0657</td><td>15869722414.0</td><td>1200.0</td></tr>
+<tr><td>2024.0</td><td>3.0</td><td>2453.39</td><td>0.0291</td><td>14911286734.0</td><td>1280.0</td></tr>
+<tr><td>2024.0</td><td>4.0</td><td>2339.47</td><td>-0.2116</td><td>11996598216.0</td><td>1240.0</td></tr>
+<tr><td>2025.0</td><td>1.0</td><td>2216.11</td><td>-0.089</td><td>11113388964.0</td><td>1240.0</td></tr>
+<tr><td>2025.0</td><td>2.0</td><td>2249.13</td><td>0.1214</td><td>11742491800.0</td><td>1220.0</td></tr>
+<tr><td>2025.0</td><td>3.0</td><td>2388.7</td><td>-0.1293</td><td>9025015077.0</td><td>1280.0</td></tr>
+<tr><td>2025.0</td><td>4.0</td><td>2547.37</td><td>0.0182</td><td>9050884518.0</td><td>1240.0</td></tr>
+<tr><td>2026.0</td><td>1.0</td><td>2467.52</td><td>-0.1455</td><td>14077419796.0</td><td>1200.0</td></tr>
+<tr><td>2026.0</td><td>2.0</td><td>2313.45</td><td>-0.0594</td><td>14836920973.0</td><td>1200.0</td></tr>
+<tr><td>2026.0</td><td>3.0</td><td>2381.84</td><td>-0.098</td><td>10952232439.0</td><td>1300.0</td></tr>
+</tbody>
+</table>
+
+<h3>3.4  Drill-Down Operation</h3>
+<p><em>Decomposes from Year → Quarter → Month for INFY.</em></p>
+<pre>SELECT t.Year, t.Quarter, t.Month,
+       ROUND(AVG(f.Close_Price),  2) AS Avg_Close,
+       ROUND(AVG(f.Daily_Return), 4) AS Avg_Return,
+       SUM(f.Volume)                 AS Total_Volume
+  FROM Fact_DailyTrades f
+  JOIN Dim_Time  t ON f.Time_Key  = t.Time_Key
+  JOIN Dim_Stock s ON f.Stock_Key = s.Stock_Key
+ WHERE s.Ticker = 'INFY'
+ GROUP BY t.Year, t.Quarter, t.Month
+ ORDER BY t.Year, t.Quarter, t.Month
+ LIMIT 12;</pre>
+<p><strong>Result:</strong></p>
+<table class="result-table">
+<thead><tr><th>Year</th><th>Quarter</th><th>Month</th><th>Avg_Close</th><th>Avg_Return</th><th>Total_Volume</th></tr></thead>
+<tbody><tr><td>2023.0</td><td>4.0</td><td>10.0</td><td>1289.59</td><td>-0.1677</td><td>79507358.0</td></tr>
+<tr><td>2023.0</td><td>4.0</td><td>11.0</td><td>1303.97</td><td>-0.023</td><td>85186084.0</td></tr>
+<tr><td>2023.0</td><td>4.0</td><td>12.0</td><td>1394.75</td><td>0.353</td><td>130077843.0</td></tr>
+<tr><td>2024.0</td><td>1.0</td><td>1.0</td><td>1469.26</td><td>0.0533</td><td>165823157.0</td></tr>
+<tr><td>2024.0</td><td>1.0</td><td>2.0</td><td>1549.02</td><td>0.0133</td><td>101673806.0</td></tr>
+<tr><td>2024.0</td><td>1.0</td><td>3.0</td><td>1459.2</td><td>-0.3456</td><td>135900753.0</td></tr>
+<tr><td>2024.0</td><td>2.0</td><td>4.0</td><td>1342.27</td><td>-0.2435</td><td>185453567.0</td></tr>
+<tr><td>2024.0</td><td>2.0</td><td>5.0</td><td>1326.73</td><td>0.0424</td><td>174897064.0</td></tr>
+<tr><td>2024.0</td><td>2.0</td><td>6.0</td><td>1410.3</td><td>0.1263</td><td>177134468.0</td></tr>
+<tr><td>2024.0</td><td>3.0</td><td>7.0</td><td>1634.49</td><td>0.4341</td><td>192519323.0</td></tr>
+<tr><td>2024.0</td><td>3.0</td><td>8.0</td><td>1732.42</td><td>-0.07</td><td>124670491.0</td></tr>
+<tr><td>2024.0</td><td>3.0</td><td>9.0</td><td>1801.31</td><td>-0.1538</td><td>134369302.0</td></tr>
+</tbody>
+</table>
+
+<h3>3.5  Pivot Operation</h3>
+<p><em>Cross-tabulates average daily return per sector per year.</em></p>
+<pre>SELECT s.Sector,
+       ROUND(AVG(CASE WHEN t.Year = 2021 THEN f.Daily_Return END), 4) AS [2021],
+       ROUND(AVG(CASE WHEN t.Year = 2022 THEN f.Daily_Return END), 4) AS [2022],
+       ROUND(AVG(CASE WHEN t.Year = 2023 THEN f.Daily_Return END), 4) AS [2023],
+       ROUND(AVG(CASE WHEN t.Year = 2024 THEN f.Daily_Return END), 4) AS [2024]
+  FROM Fact_DailyTrades f
+  JOIN Dim_Stock s ON f.Stock_Key = s.Stock_Key
+  JOIN Dim_Time  t ON f.Time_Key  = t.Time_Key
+ GROUP BY s.Sector
+ ORDER BY s.Sector;</pre>
+<p><strong>Result:</strong></p>
+<table class="result-table">
+<thead><tr><th>Sector</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th></tr></thead>
+<tbody><tr><td>Auto</td><td>None</td><td>None</td><td>0.0346</td><td>-0.0574</td></tr>
+<tr><td>Banking</td><td>None</td><td>None</td><td>0.0008</td><td>0.0147</td></tr>
+<tr><td>Energy</td><td>None</td><td>None</td><td>0.0768</td><td>-0.1276</td></tr>
+<tr><td>FMCG</td><td>None</td><td>None</td><td>0.0801</td><td>-0.1353</td></tr>
+<tr><td>IT</td><td>None</td><td>None</td><td>0.1064</td><td>-0.0203</td></tr>
+</tbody>
+</table>
+
+<h3>3.6  Drill-Across Operation</h3>
+<p><em>Joins two fact tables (DailyTrades + QuarterlyFinancials) via conformed dims.</em></p>
+<pre>SELECT s.Ticker, s.Sector, t.Year, t.Quarter,
+       ROUND(AVG(f.Daily_Return), 4) AS Avg_Daily_Return,
+       ROUND(AVG(f.Volume),       0) AS Avg_Volume,
+       ROUND(AVG(q.EPS),          2) AS Avg_EPS,
+       ROUND(AVG(q.PE_Ratio),     2) AS Avg_PE
+  FROM Fact_DailyTrades f
+  JOIN Dim_Stock s ON f.Stock_Key = s.Stock_Key
+  JOIN Dim_Time  t ON f.Time_Key  = t.Time_Key
+  JOIN Fact_QuarterlyFinancials q
+       ON q.Stock_Key = f.Stock_Key AND q.Time_Key = f.Time_Key
+ GROUP BY s.Ticker, t.Year, t.Quarter
+ ORDER BY s.Ticker, t.Year, t.Quarter
+ LIMIT 10;</pre>
+<p><strong>Result:</strong></p>
+<table class="result-table">
+<thead><tr><th>Ticker</th><th>Sector</th><th>Year</th><th>Quarter</th><th>Avg_Daily_Return</th><th>Avg_Volume</th><th>Avg_EPS</th><th>Avg_PE</th></tr></thead>
+<tbody><tr><td>BAJAJ-AUTO</td><td>Auto</td><td>2023</td><td>4</td><td>0.42</td><td>472168.0</td><td>53.53</td><td>22.97</td></tr>
+<tr><td>BAJAJ-AUTO</td><td>Auto</td><td>2024</td><td>1</td><td>-1.02</td><td>253274.0</td><td>76.58</td><td>24.56</td></tr>
+<tr><td>BAJAJ-AUTO</td><td>Auto</td><td>2024</td><td>2</td><td>-1.66</td><td>419820.0</td><td>5.49</td><td>39.36</td></tr>
+<tr><td>BAJAJ-AUTO</td><td>Auto</td><td>2024</td><td>3</td><td>0.29</td><td>289355.0</td><td>62.36</td><td>27.72</td></tr>
+<tr><td>BAJAJ-AUTO</td><td>Auto</td><td>2024</td><td>4</td><td>-2.07</td><td>670828.0</td><td>42.1</td><td>22.26</td></tr>
+<tr><td>BAJAJ-AUTO</td><td>Auto</td><td>2025</td><td>1</td><td>-0.15</td><td>558535.0</td><td>42.65</td><td>29.74</td></tr>
+<tr><td>BAJAJ-AUTO</td><td>Auto</td><td>2025</td><td>2</td><td>4.74</td><td>283618.0</td><td>45.98</td><td>33.94</td></tr>
+<tr><td>BAJAJ-AUTO</td><td>Auto</td><td>2025</td><td>3</td><td>0.35</td><td>363782.0</td><td>14.8</td><td>27.62</td></tr>
+<tr><td>BAJAJ-AUTO</td><td>Auto</td><td>2025</td><td>4</td><td>-1.07</td><td>551282.0</td><td>7.5</td><td>10.81</td></tr>
+<tr><td>BAJAJ-AUTO</td><td>Auto</td><td>2026</td><td>1</td><td>2.06</td><td>306936.0</td><td>47.09</td><td>38.3</td></tr>
+</tbody>
+</table>
+
+<div class="conclusion">
+  <strong>Conclusion:</strong>
+  All six OLAP operations were successfully executed on the Stock Market Data Warehouse.
+  Slice isolated NSE-listed stocks; Dice filtered IT-sector positive-return days in 2023;
+  Roll-Up aggregated trade metrics to the quarterly level; Drill-Down decomposed INFY's
+  performance month-by-month; Pivot cross-tabulated sector-wise average returns by year;
+  and Drill-Across joined daily trade facts with quarterly financials via conformed dimensions,
+  demonstrating the power of a multi-fact constellation schema.
+</div>
+
+</div><!-- /.page-wrapper -->
+</body>
+</html>
