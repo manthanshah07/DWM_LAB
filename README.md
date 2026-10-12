@@ -32,8 +32,8 @@ The **Stock Market Analysis System** is a complete end-to-end **Data Warehousing
 
 | Exp No. | Experiment Title | Implementation Artifact | Key Methodology & Highlights |
 | :---: | :--- | :--- | :--- |
-| **Exp 01** | **Data Warehouse Star / Snowflake Schema** | `stock_market_data.csv`, `app.py` | Central fact table (`Open_Price`, `High_Price`, `Low_Price`, `Close_Price`, `Volume`, `Daily_Return`, `Intraday_Volatility`) linked to `Dim_Stock` (`Ticker`, `Sector`, `Exchange`) and `Dim_Time` (`Date`, `Year`, `Quarter`, `Month`, `DayOfWeek`). |
-| **Exp 02** | **Multidimensional OLAP Operations** | `app.py` (Tab 1) | Interactive **Roll-Up** (Daily $\rightarrow$ Monthly / Quarterly / Yearly), **Drill-Down** (Sector $\rightarrow$ Ticker trajectory), **Slice** (by Year), **Dice** (by Sector & Exchange), and **Pivot** cross-tabulation. |
+| **Exp 01** | **Data Warehouse Star, Snowflake & Fact Constellation Schema** | `lab1_schema.sql`, `run_labs_1_2.py`, `DWM_Lab_1_2_Stock_Market.md` | Full SQL DDL for **Star Schema** (`Fact_DailyTrades`, `Dim_Time`, `Dim_Stock`, `Dim_Exchange`), **Snowflake Schema** (`Dim_Sector`, `Dim_Stock_Snowflake`), and **Fact Constellation / Galaxy Schema** (`Fact_DailyTrades` + `Fact_QuarterlyFinancials`). |
+| **Exp 02** | **Multidimensional OLAP Operations** | `lab2_olap.sql`, `run_labs_1_2.py`, `DWM_Lab_1_2_Stock_Market.md`, `app.py` | SQL & Streamlit execution of all 6 OLAP operations: **Slice**, **Dice**, **Roll-Up**, **Drill-Down**, **Pivot (Cross-Tabulation)**, and **Drill-Across** (spanning two fact tables). |
 | **Exp 03** | **Data Preprocessing, Exploration & Visualization** | `DWM_Lab_3_Stock_Market.ipynb` (`.html`) | Zero-null verification, temporal feature extraction, `Intraday_Volatility` engineering, sector liquidity bar charts, return/volatility boxplots, and 7-feature correlation heatmap. |
 | **Exp 04** | **Simple & Multiple Linear Regression** | `DWM_Lab_4_Stock_Market.ipynb` (`.html`) | Predicts `Close_Price` using `Open_Price` (Simple LR) vs. `['Open_Price', 'High_Price', 'Low_Price', 'Volume']` (Multiple LR) on an 80:20 train-test split. |
 | **Exp 05** | **Decision Tree Classification & Mutual Information** | `DWM_Lab_5_Stock_Market.ipynb` (`.html`) | Discretizes `Daily_Return` into balanced tertiles (`Low`, `Medium`, `High`), trains an Entropy-based `DecisionTreeClassifier(max_depth=5)`, and computes `mutual_info_classif`. |
@@ -45,7 +45,23 @@ The **Stock Market Analysis System** is a complete end-to-end **Data Warehousing
 
 ---
 
-## 3. Key Empirical Performance Metrics
+## 3. Data Warehouse Schemas & SQL OLAP Operations (Experiments 01 & 02)
+
+- **Dimensional Schemas (`lab1_schema.sql`):**
+  1. **Star Schema:** `Fact_DailyTrades` (`14,800` rows) joined directly to `Dim_Time` (`740` rows), `Dim_Stock` (`20` rows), and `Dim_Exchange` (`1` row).
+  2. **Snowflake Schema:** Normalizes `Dim_Stock` into `Dim_Stock_Snowflake` (`20` rows) and `Dim_Sector` (`5` rows) linked to `Fact_DailyTrades_Snowflake` (`14,800` rows).
+  3. **Fact Constellation (Galaxy) Schema:** Pairs `Fact_DailyTrades` (`14,800` rows) with `Fact_QuarterlyFinancials` (`260` quarterly corporate earnings records) across shared conformed dimensions (`Dim_Time`, `Dim_Stock`, `Dim_Exchange`).
+- **OLAP Queries (`lab2_olap.sql` & `DWM_Lab_1_2_Stock_Market.md`):**
+  - **Slice:** Isolates January 2024 stock performance (`WHERE t.Year = 2024 AND t.MonthName = 'January'`).
+  - **Dice:** Extracts multi-dimensional sub-cube (`Sector IN ('IT', 'Banking') AND Year = 2024 AND Quarter = 'Q1' AND ExchangeName = 'NSE'`).
+  - **Roll-Up:** Aggregates daily trading volume and returns up the `Day -> Month -> Year` hierarchy by Sector.
+  - **Drill-Down:** Navigates down the Snowflake hierarchy (`Dim_Sector -> Dim_Stock_Snowflake -> Fact_DailyTrades_Snowflake`) to inspect quarterly ticker performance in the `Energy` sector.
+  - **Pivot:** Rotates `Sector` (rows) against `Q1`, `Q2`, `Q3`, `Q4` (columns) using conditional SQL `CASE` aggregation.
+  - **Drill-Across:** Joins `Fact_DailyTrades` and `Fact_QuarterlyFinancials` via CTEs on shared `StockKey` and `Year` to compare annual traded volume against corporate Net Profit and EPS.
+
+---
+
+## 4. Key Empirical Performance Metrics
 
 - **Linear Regression (Exp 04):**
   - **Simple Linear Regression (`Open_Price` $\rightarrow$ `Close_Price`):** $R^2 = 0.999706$, $\text{MSE} = 2960.9407$ ($\text{RMSE} = ₹54.41$)
@@ -67,7 +83,7 @@ The **Stock Market Analysis System** is a complete end-to-end **Data Warehousing
 
 ---
 
-## 4. Setup & Execution Instructions
+## 5. Setup & Execution Instructions
 
 ### 1. Clone the Repository
 ```bash
@@ -82,25 +98,34 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. (Optional) Re-generate the 3-Year NSE Stock Dataset
+### 3. Execute Data Warehouse DDL & OLAP Queries (Experiments 01 & 02)
+```bash
+python run_labs_1_2.py
+```
+
+### 4. (Optional) Re-generate the 3-Year NSE Stock Dataset
 ```bash
 python generate_data.py
 ```
 
-### 4. Launch the Interactive Streamlit Dashboard
+### 5. Launch the Interactive Streamlit Dashboard
 ```bash
 streamlit run app.py
 ```
 
 ---
 
-## 5. Repository Structure
+## 6. Repository Structure
 
 ```text
 DWM_LAB/
 ├── app.py                          # Exp 10: Unified 6-Tab Interactive Streamlit Dashboard
 ├── generate_data.py                # Automated yfinance NSE Data Ingestion Pipeline
 ├── stock_market_data.csv           # 3-Year Daily Trading Dataset (14,800 rows x 10 columns)
+├── lab1_schema.sql                 # Exp 01: SQL DDL for Star, Snowflake & Fact Constellation Schemas
+├── lab2_olap.sql                   # Exp 02: SQL OLAP Queries (Slice, Dice, Roll-Up, Drill-Down, Pivot, Drill-Across)
+├── run_labs_1_2.py                 # Automated Relational Warehouse Loader & OLAP Query Runner
+├── DWM_Lab_1_2_Stock_Market.md     # Exp 01 & 02: Executed Schema & OLAP Output Report
 ├── DWM_Lab_3_Stock_Market.ipynb    # Exp 03: Data Preprocessing, EDA & Visualization (.ipynb & .html)
 ├── DWM_Lab_4_Stock_Market.ipynb    # Exp 04: Simple & Multiple Linear Regression (.ipynb & .html)
 ├── DWM_Lab_5_Stock_Market.ipynb    # Exp 05: Decision Tree Classification & Mutual Info (.ipynb & .html)
