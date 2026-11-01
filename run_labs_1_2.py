@@ -66,7 +66,7 @@ def run_experiments_1_and_2():
     ).round(2)
 
     # Connect to SQLite warehouse database (also persisted on disk for inspection)
-    db_path = Path("dwm_stock_warehouse.db")
+    db_path = Path("dwm_academic_warehouse.db")
     if db_path.exists():
         db_path.unlink()
 
