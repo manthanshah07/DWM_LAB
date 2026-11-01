@@ -1,0 +1,328 @@
+{
+  "source_csv": "/Users/manthanshah/Documents/DWM_LAB/stock_market_data.csv",
+  "outer_train_rows": 11740,
+  "outer_train_dates": 587,
+  "test_rows": 2920,
+  "test_dates": 146,
+  "train_date_min": "2023-10-19",
+  "train_date_max": "2026-03-05",
+  "max_train_target_date": "2026-03-06",
+  "test_feature_date_min": "2026-03-09",
+  "test_feature_date_max": "2026-10-09",
+  "outer_train_thresholds": {
+    "q1": -0.43064182194616646,
+    "q2": 0.49471462624827467
+  },
+  "class_metrics": [
+    {
+      "Model": "Tuned Decision Tree (depth=4, leaf=30)",
+      "Accuracy (%)": 37.63698630136986,
+      "Balanced Accuracy (%)": 38.29105834180128,
+      "Macro F1": 0.3742279965746255,
+      "Weighted F1": 0.37346123181343505,
+      "Weighted Precision": 0.38482207757588455,
+      "Weighted Recall": 0.3763698630136986,
+      "Parameters": "{'ccp_alpha': 0.0, 'class_weight': None, 'criterion': 'entropy', 'max_depth': 4, 'max_features': None, 'max_leaf_nodes': None, 'min_impurity_decrease': 0.0, 'min_samples_leaf': 30, 'min_samples_split': 2, 'min_weight_fraction_leaf': 0.0, 'monotonic_cst': None, 'random_state': 42, 'splitter': 'best'}"
+    },
+    {
+      "Model": "Random Forest (100 trees, depth=4, leaf=30)",
+      "Accuracy (%)": 36.47260273972603,
+      "Balanced Accuracy (%)": 37.80062004534714,
+      "Macro F1": 0.3634598272247147,
+      "Weighted F1": 0.36111026839753324,
+      "Weighted Precision": 0.3817781023442901,
+      "Weighted Recall": 0.3647260273972603,
+      "Parameters": "{'bootstrap': True, 'ccp_alpha': 0.0, 'class_weight': None, 'criterion': 'gini', 'max_depth': 4, 'max_features': 'sqrt', 'max_leaf_nodes': None, 'max_samples': None, 'min_impurity_decrease': 0.0, 'min_samples_leaf': 30, 'min_samples_split': 2, 'min_weight_fraction_leaf': 0.0, 'monotonic_cst': None, 'n_estimators': 100, 'n_jobs': -1, 'oob_score': False, 'random_state': 42, 'verbose': 0, 'warm_start': False}"
+    },
+    {
+      "Model": "Decision Tree (depth=5)",
+      "Accuracy (%)": 36.36986301369863,
+      "Balanced Accuracy (%)": 37.56213642314836,
+      "Macro F1": 0.359597056054564,
+      "Weighted F1": 0.35853908792990774,
+      "Weighted Precision": 0.38495011532771267,
+      "Weighted Recall": 0.3636986301369863,
+      "Parameters": "{'ccp_alpha': 0.0, 'class_weight': None, 'criterion': 'entropy', 'max_depth': 5, 'max_features': None, 'max_leaf_nodes': None, 'min_impurity_decrease': 0.0, 'min_samples_leaf': 1, 'min_samples_split': 2, 'min_weight_fraction_leaf': 0.0, 'monotonic_cst': None, 'random_state': 42, 'splitter': 'best'}"
+    },
+    {
+      "Model": "Logistic Regression (scaled, C=0.1)",
+      "Accuracy (%)": 36.16438356164384,
+      "Balanced Accuracy (%)": 37.67683935026689,
+      "Macro F1": 0.361047215445317,
+      "Weighted F1": 0.3563682200427795,
+      "Weighted Precision": 0.3756899884542217,
+      "Weighted Recall": 0.36164383561643837,
+      "Parameters": "{'memory': None, 'steps': [('standardscaler', StandardScaler()), ('logisticregression', LogisticRegression(C=0.1, max_iter=2000, random_state=42))], 'transform_input': None, 'verbose': False, 'standardscaler': StandardScaler(), 'logisticregression': LogisticRegression(C=0.1, max_iter=2000, random_state=42), 'standardscaler__copy': True, 'standardscaler__with_mean': True, 'standardscaler__with_std': True, 'logisticregression__C': 0.1, 'logisticregression__class_weight': None, 'logisticregression__dual': False, 'logisticregression__fit_intercept': True, 'logisticregression__intercept_scaling': 1, 'logisticregression__l1_ratio': 0.0, 'logisticregression__max_iter': 2000, 'logisticregression__n_jobs': None, 'logisticregression__penalty': 'deprecated', 'logisticregression__random_state': 42, 'logisticregression__solver': 'lbfgs', 'logisticregression__tol': 0.0001, 'logisticregression__verbose': 0, 'logisticregression__warm_start': False}"
+    },
+    {
+      "Model": "Majority Baseline",
+      "Accuracy (%)": 33.013698630136986,
+      "Balanced Accuracy (%)": 33.33333333333333,
+      "Macro F1": 0.16546515619636112,
+      "Weighted F1": 0.1638785040136563,
+      "Weighted Precision": 0.10899042972415086,
+      "Weighted Recall": 0.33013698630136984,
+      "Parameters": "predict=High"
+    },
+    {
+      "Model": "Gaussian Naive Bayes",
+      "Accuracy (%)": 31.883561643835616,
+      "Balanced Accuracy (%)": 34.98992489248704,
+      "Macro F1": 0.2937920450249207,
+      "Weighted F1": 0.2842500119320145,
+      "Weighted Precision": 0.35154039091289657,
+      "Weighted Recall": 0.3188356164383562,
+      "Parameters": "{'priors': None, 'var_smoothing': 1e-09}"
+    }
+  ],
+  "tuned_tree_confusion_matrix_labels_low_medium_high": [
+    [
+      339,
+      385,
+      437
+    ],
+    [
+      197,
+      310,
+      288
+    ],
+    [
+      259,
+      255,
+      450
+    ]
+  ],
+  "moving_block_bootstrap": [
+    {
+      "Block Length (trading days)": 3,
+      "Trading-Date Clusters": 146,
+      "Rows": 2920,
+      "Reference Accuracy (%)": 36.36986301369863,
+      "Candidate Accuracy (%)": 37.63698630136986,
+      "Accuracy Difference (pp)": 1.2671232876712326,
+      "95% CI Lower (pp)": -0.8904109589041096,
+      "95% CI Upper (pp)": 3.0821917808219177,
+      "Two-Sided Bootstrap p-value": 0.20837916208379162,
+      "Bootstrap Replicates": 10000
+    },
+    {
+      "Block Length (trading days)": 5,
+      "Trading-Date Clusters": 146,
+      "Rows": 2920,
+      "Reference Accuracy (%)": 36.36986301369863,
+      "Candidate Accuracy (%)": 37.63698630136986,
+      "Accuracy Difference (pp)": 1.2671232876712326,
+      "95% CI Lower (pp)": -1.1301369863013697,
+      "95% CI Upper (pp)": 3.219178082191781,
+      "Two-Sided Bootstrap p-value": 0.26987301269873015,
+      "Bootstrap Replicates": 10000
+    },
+    {
+      "Block Length (trading days)": 10,
+      "Trading-Date Clusters": 146,
+      "Rows": 2920,
+      "Reference Accuracy (%)": 36.36986301369863,
+      "Candidate Accuracy (%)": 37.63698630136986,
+      "Accuracy Difference (pp)": 1.2671232876712326,
+      "95% CI Lower (pp)": -1.5410958904109588,
+      "95% CI Upper (pp)": 3.321917808219178,
+      "Two-Sided Bootstrap p-value": 0.3388661133886611,
+      "Bootstrap Replicates": 10000
+    }
+  ],
+  "purged_cv_top_10": [
+    {
+      "Max Depth": 4,
+      "Min Samples Leaf": 50,
+      "Criterion": "entropy",
+      "Mean Fold Accuracy (%)": 36.52577319587628,
+      "Std Fold Accuracy (pp)": 3.0557490563975236,
+      "Mean Fold Macro F1": 0.3042722782173193,
+      "Mean Fold Balanced Accuracy (%)": 34.55388585515834,
+      "Pooled OOF Accuracy (%)": 36.52577319587629,
+      "Fold Accuracies": "0.3552, 0.3351, 0.3407, 0.4005, 0.3948",
+      "CV Folds": 5,
+      "Purge Sessions": 1
+    },
+    {
+      "Max Depth": 4,
+      "Min Samples Leaf": 30,
+      "Criterion": "entropy",
+      "Mean Fold Accuracy (%)": 36.46391752577319,
+      "Std Fold Accuracy (pp)": 3.3561807773329537,
+      "Mean Fold Macro F1": 0.2967334432621161,
+      "Mean Fold Balanced Accuracy (%)": 34.466276032926224,
+      "Pooled OOF Accuracy (%)": 36.4639175257732,
+      "Fold Accuracies": "0.3479, 0.3371, 0.3361, 0.4026, 0.3995",
+      "CV Folds": 5,
+      "Purge Sessions": 1
+    },
+    {
+      "Max Depth": 4,
+      "Min Samples Leaf": 40,
+      "Criterion": "entropy",
+      "Mean Fold Accuracy (%)": 36.39175257731958,
+      "Std Fold Accuracy (pp)": 3.317241599126324,
+      "Mean Fold Macro F1": 0.2954275901182382,
+      "Mean Fold Balanced Accuracy (%)": 34.33063703524349,
+      "Pooled OOF Accuracy (%)": 36.391752577319586,
+      "Fold Accuracies": "0.3485, 0.3351, 0.3366, 0.4026, 0.3969",
+      "CV Folds": 5,
+      "Purge Sessions": 1
+    },
+    {
+      "Max Depth": 4,
+      "Min Samples Leaf": 40,
+      "Criterion": "gini",
+      "Mean Fold Accuracy (%)": 36.268041237113394,
+      "Std Fold Accuracy (pp)": 3.351823693843311,
+      "Mean Fold Macro F1": 0.2947764411684889,
+      "Mean Fold Balanced Accuracy (%)": 34.37521378071585,
+      "Pooled OOF Accuracy (%)": 36.2680412371134,
+      "Fold Accuracies": "0.3485, 0.3309, 0.3366, 0.4005, 0.3969",
+      "CV Folds": 5,
+      "Purge Sessions": 1
+    },
+    {
+      "Max Depth": 6,
+      "Min Samples Leaf": 50,
+      "Criterion": "entropy",
+      "Mean Fold Accuracy (%)": 36.21649484536083,
+      "Std Fold Accuracy (pp)": 1.9302730050307577,
+      "Mean Fold Macro F1": 0.3264397776483943,
+      "Mean Fold Balanced Accuracy (%)": 34.930679639588625,
+      "Pooled OOF Accuracy (%)": 36.21649484536083,
+      "Fold Accuracies": "0.3552, 0.3340, 0.3613, 0.3794, 0.3809",
+      "CV Folds": 5,
+      "Purge Sessions": 1
+    },
+    {
+      "Max Depth": 4,
+      "Min Samples Leaf": 20,
+      "Criterion": "entropy",
+      "Mean Fold Accuracy (%)": 36.19587628865979,
+      "Std Fold Accuracy (pp)": 3.6305276771833532,
+      "Mean Fold Macro F1": 0.29522110820340636,
+      "Mean Fold Balanced Accuracy (%)": 34.27212823481018,
+      "Pooled OOF Accuracy (%)": 36.1958762886598,
+      "Fold Accuracies": "0.3479, 0.3258, 0.3345, 0.4015, 0.4000",
+      "CV Folds": 5,
+      "Purge Sessions": 1
+    },
+    {
+      "Max Depth": 4,
+      "Min Samples Leaf": 50,
+      "Criterion": "gini",
+      "Mean Fold Accuracy (%)": 36.1340206185567,
+      "Std Fold Accuracy (pp)": 3.324042921732547,
+      "Mean Fold Macro F1": 0.29793694648873487,
+      "Mean Fold Balanced Accuracy (%)": 34.33701134998521,
+      "Pooled OOF Accuracy (%)": 36.1340206185567,
+      "Fold Accuracies": "0.3402, 0.3309, 0.3407, 0.4005, 0.3943",
+      "CV Folds": 5,
+      "Purge Sessions": 1
+    },
+    {
+      "Max Depth": 4,
+      "Min Samples Leaf": 75,
+      "Criterion": "gini",
+      "Mean Fold Accuracy (%)": 36.061855670103085,
+      "Std Fold Accuracy (pp)": 3.2744335674413003,
+      "Mean Fold Macro F1": 0.28555340048672584,
+      "Mean Fold Balanced Accuracy (%)": 33.949625684187936,
+      "Pooled OOF Accuracy (%)": 36.06185567010309,
+      "Fold Accuracies": "0.3454, 0.3309, 0.3356, 0.4026, 0.3887",
+      "CV Folds": 5,
+      "Purge Sessions": 1
+    },
+    {
+      "Max Depth": 4,
+      "Min Samples Leaf": 75,
+      "Criterion": "entropy",
+      "Mean Fold Accuracy (%)": 36.061855670103085,
+      "Std Fold Accuracy (pp)": 2.9764638088151734,
+      "Mean Fold Macro F1": 0.2851348006629794,
+      "Mean Fold Balanced Accuracy (%)": 33.94506372499356,
+      "Pooled OOF Accuracy (%)": 36.06185567010309,
+      "Fold Accuracies": "0.3536, 0.3320, 0.3356, 0.4010, 0.3809",
+      "CV Folds": 5,
+      "Purge Sessions": 1
+    },
+    {
+      "Max Depth": 4,
+      "Min Samples Leaf": 30,
+      "Criterion": "gini",
+      "Mean Fold Accuracy (%)": 35.87628865979381,
+      "Std Fold Accuracy (pp)": 3.940687094034439,
+      "Mean Fold Macro F1": 0.2907914269105546,
+      "Mean Fold Balanced Accuracy (%)": 34.179800780998534,
+      "Pooled OOF Accuracy (%)": 35.876288659793815,
+      "Fold Accuracies": "0.3479, 0.3103, 0.3371, 0.4005, 0.3979",
+      "CV Folds": 5,
+      "Purge Sessions": 1
+    }
+  ],
+  "cv_fold_details": [
+    {
+      "Fold": 1,
+      "Train Dates": 101,
+      "Train Rows": 2020,
+      "Purged Dates": "2024-03-19",
+      "Max Train Target Date": "2024-03-19",
+      "Validation Dates": 97,
+      "Validation Rows": 1940,
+      "Min Validation Date": "2024-03-20",
+      "Fold q1": -0.35645581079551625,
+      "Fold q2": 0.5793959632138062
+    },
+    {
+      "Fold": 2,
+      "Train Dates": 198,
+      "Train Rows": 3960,
+      "Purged Dates": "2024-08-13",
+      "Max Train Target Date": "2024-08-13",
+      "Validation Dates": 97,
+      "Validation Rows": 1940,
+      "Min Validation Date": "2024-08-14",
+      "Fold q1": -0.3702363998927289,
+      "Fold q2": 0.618845957244824
+    },
+    {
+      "Fold": 3,
+      "Train Dates": 295,
+      "Train Rows": 5900,
+      "Purged Dates": "2025-01-02",
+      "Max Train Target Date": "2025-01-02",
+      "Validation Dates": 97,
+      "Validation Rows": 1940,
+      "Min Validation Date": "2025-01-03",
+      "Fold q1": -0.40665309195525384,
+      "Fold q2": 0.5578156067246283
+    },
+    {
+      "Fold": 4,
+      "Train Dates": 392,
+      "Train Rows": 7840,
+      "Purged Dates": "2025-05-27",
+      "Max Train Target Date": "2025-05-27",
+      "Validation Dates": 97,
+      "Validation Rows": 1940,
+      "Min Validation Date": "2025-05-28",
+      "Fold q1": -0.4372336439233629,
+      "Fold q2": 0.5582466918714515
+    },
+    {
+      "Fold": 5,
+      "Train Dates": 489,
+      "Train Rows": 9780,
+      "Purged Dates": "2025-10-14",
+      "Max Train Target Date": "2025-10-14",
+      "Validation Dates": 97,
+      "Validation Rows": 1940,
+      "Min Validation Date": "2025-10-15",
+      "Fold q1": -0.4315461887159447,
+      "Fold q2": 0.5107068170384492
+    }
+  ],
+  "evaluation_warning": "The historical holdout metrics have already been inspected in prior model experiments; treat them as exploratory retrospective comparisons, not a pristine confirmatory test."
+}

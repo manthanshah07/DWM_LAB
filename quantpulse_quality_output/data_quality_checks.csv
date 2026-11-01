@@ -1,0 +1,17 @@
+Check,Status,Observed,Details,Severity
+Required schema,PASS,10 required columns,All required OHLCV and classification columns are present.,None
+Missing required values,PASS,0,No nulls in required fields.,None
+Date parseability,PASS,0,All Date values parse as timestamps.,None
+Finite numeric measures,PASS,0,"All prices, volume and returns are finite numeric values.",None
+Positive OHLC prices,PASS,0,All OHLC prices are positive.,None
+OHLC envelope,PASS,0,High encloses Open/Close and Low encloses Open/Close.,None
+Non-negative volume,PASS,0,Volume is non-negative.,None
+Date-ticker uniqueness,PASS,0,One row at most per ticker per date.,None
+Exact duplicate rows,PASS,0,No exact duplicate records.,None
+Ticker-to-sector consistency,PASS,0,Each ticker maps to exactly one sector.,None
+Complete date panel,PASS,740 dates; 0 incomplete,Each date contains exactly 20 unique tickers.,None
+Ticker history balance,PASS,740–740 sessions,All tickers have the same number of dates.,None
+Daily_Return definition,PASS,"14,800/14,800 match (100.00%)",Daily_Return equals rounded Open-to-Close percentage return.,None
+Exchange coverage,PASS,['NSE'],Observed exchanges are listed; one exchange is sufficient for the current scope.,None
+Source provenance metadata,WARN,No populated provenance columns / sidecar supplied,"The CSV alone does not establish where prices came from, retrieval time, or whether prices are adjusted. Add a source citation and extraction metadata to project documentation.",Medium
+Source file fingerprint,PASS,914753232eb5e677716d7a65a4b1cd2ec48826380dbcfa5ba585a9832b93263b,SHA-256 computed from the source file bytes.,None

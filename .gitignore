@@ -13,5 +13,10 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
+# SQLite WAL and lock sidecars
+*.db-wal
+*.db-shm
+*_staging.db*
+
 # Temporary build scripts
 build_lab*.py

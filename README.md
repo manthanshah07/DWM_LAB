@@ -113,6 +113,16 @@ python generate_data.py
 streamlit run app.py
 ```
 
+### 6. Run Automated Test & Verification Suites (65 Tests)
+```bash
+python3 -m unittest discover
+```
+To run targeted audits and methodology validations individually:
+```bash
+python run_quality_audit.py          # Data quality & provenance audit
+python run_quantpulse_validation.py   # 10,000-replicate moving-block bootstrap
+```
+
 ---
 
 ## 6. Repository Structure
@@ -120,8 +130,21 @@ streamlit run app.py
 ```text
 DWM_LAB/
 ├── app.py                          # Exp 10: Unified 6-Tab Interactive Streamlit Dashboard
-├── generate_data.py                # Automated yfinance NSE Data Ingestion Pipeline
+├── warehouse.py                    # SQLite Snowflake Dimensional Warehouse & Thread-Safe OLAP Engine
 ├── stock_market_data.csv           # 3-Year Daily Trading Dataset (14,800 rows x 10 columns)
+├── quantpulse_quality.py           # Automated 16-point Data Quality & Provenance Auditor
+├── predictive_cv.py                # Purged Date-Grouped Time-Series Cross-Validation
+├── predictive_inference.py         # Paired Moving-Block Bootstrap Statistical Inference
+├── predictive_validation.py        # Out-of-Sample Holdout & Metric Verification Suite
+├── run_quality_audit.py            # CLI Driver: Exports Data Quality Reports to quantpulse_quality_output/
+├── run_quantpulse_validation.py    # CLI Driver: Runs 10k-Replicate Bootstrap & Exports Validation Outputs
+├── test_warehouse_olap.py          # 26 Unit Tests: Schema, Constraints, WAL Checkpoint, OLAP Queries
+├── test_data_quality.py            # 10 Unit Tests: Fact Integrity, OHLC Envelope, Key Collisions
+├── test_predictive_methodology.py  # 7 Unit Tests: Purged CV, Fold Chronology, Bootstrap
+├── test_ui_smoke.py                # 7 Unit Tests: Streamlit AppTest Multi-Tab Smoke Verification
+├── test_quantpulse_quality.py      # Unit Tests: Quality Auditor Core Engine
+├── test_predictive_inference.py    # Unit Tests: Block Bootstrap Resampling
+├── test_predictive_validation.py   # Unit Tests: Multi-Class Holdout Verification
 ├── lab1_schema.sql                 # Exp 01: SQL DDL for Star, Snowflake & Fact Constellation Schemas
 ├── lab2_olap.sql                   # Exp 02: SQL OLAP Queries (Slice, Dice, Roll-Up, Drill-Down, Pivot, Drill-Across)
 ├── run_labs_1_2.py                 # Automated Relational Warehouse Loader & OLAP Query Runner

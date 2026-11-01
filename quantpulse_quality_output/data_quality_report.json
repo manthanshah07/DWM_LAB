@@ -1,0 +1,137 @@
+{
+  "summary": {
+    "rows": 14800,
+    "columns": 10,
+    "dates": 740,
+    "tickers": 20,
+    "sectors": 5,
+    "exchanges": [
+      "NSE"
+    ],
+    "date_min": "2023-10-12",
+    "date_max": "2026-10-12",
+    "daily_return_formula_match_pct": 100.0,
+    "business_key_duplicates": 0,
+    "missing_required_values": 0,
+    "complete_date_panel": true
+  },
+  "fingerprint_sha256": "914753232eb5e677716d7a65a4b1cd2ec48826380dbcfa5ba585a9832b93263b",
+  "failed_checks": 0,
+  "warning_checks": 1,
+  "checks": [
+    {
+      "Check": "Required schema",
+      "Status": "PASS",
+      "Observed": "10 required columns",
+      "Details": "All required OHLCV and classification columns are present.",
+      "Severity": "None"
+    },
+    {
+      "Check": "Missing required values",
+      "Status": "PASS",
+      "Observed": 0,
+      "Details": "No nulls in required fields.",
+      "Severity": "None"
+    },
+    {
+      "Check": "Date parseability",
+      "Status": "PASS",
+      "Observed": 0,
+      "Details": "All Date values parse as timestamps.",
+      "Severity": "None"
+    },
+    {
+      "Check": "Finite numeric measures",
+      "Status": "PASS",
+      "Observed": 0,
+      "Details": "All prices, volume and returns are finite numeric values.",
+      "Severity": "None"
+    },
+    {
+      "Check": "Positive OHLC prices",
+      "Status": "PASS",
+      "Observed": 0,
+      "Details": "All OHLC prices are positive.",
+      "Severity": "None"
+    },
+    {
+      "Check": "OHLC envelope",
+      "Status": "PASS",
+      "Observed": 0,
+      "Details": "High encloses Open/Close and Low encloses Open/Close.",
+      "Severity": "None"
+    },
+    {
+      "Check": "Non-negative volume",
+      "Status": "PASS",
+      "Observed": 0,
+      "Details": "Volume is non-negative.",
+      "Severity": "None"
+    },
+    {
+      "Check": "Date-ticker uniqueness",
+      "Status": "PASS",
+      "Observed": 0,
+      "Details": "One row at most per ticker per date.",
+      "Severity": "None"
+    },
+    {
+      "Check": "Exact duplicate rows",
+      "Status": "PASS",
+      "Observed": 0,
+      "Details": "No exact duplicate records.",
+      "Severity": "None"
+    },
+    {
+      "Check": "Ticker-to-sector consistency",
+      "Status": "PASS",
+      "Observed": 0,
+      "Details": "Each ticker maps to exactly one sector.",
+      "Severity": "None"
+    },
+    {
+      "Check": "Complete date panel",
+      "Status": "PASS",
+      "Observed": "740 dates; 0 incomplete",
+      "Details": "Each date contains exactly 20 unique tickers.",
+      "Severity": "None"
+    },
+    {
+      "Check": "Ticker history balance",
+      "Status": "PASS",
+      "Observed": "740\u2013740 sessions",
+      "Details": "All tickers have the same number of dates.",
+      "Severity": "None"
+    },
+    {
+      "Check": "Daily_Return definition",
+      "Status": "PASS",
+      "Observed": "14,800/14,800 match (100.00%)",
+      "Details": "Daily_Return equals rounded Open-to-Close percentage return.",
+      "Severity": "None"
+    },
+    {
+      "Check": "Exchange coverage",
+      "Status": "PASS",
+      "Observed": [
+        "NSE"
+      ],
+      "Details": "Observed exchanges are listed; one exchange is sufficient for the current scope.",
+      "Severity": "None"
+    },
+    {
+      "Check": "Source provenance metadata",
+      "Status": "WARN",
+      "Observed": "No populated provenance columns / sidecar supplied",
+      "Details": "The CSV alone does not establish where prices came from, retrieval time, or whether prices are adjusted. Add a source citation and extraction metadata to project documentation.",
+      "Severity": "Medium"
+    },
+    {
+      "Check": "Source file fingerprint",
+      "Status": "PASS",
+      "Observed": "914753232eb5e677716d7a65a4b1cd2ec48826380dbcfa5ba585a9832b93263b",
+      "Details": "SHA-256 computed from the source file bytes.",
+      "Severity": "None"
+    }
+  ]
+}
