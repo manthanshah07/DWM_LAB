@@ -6,6 +6,7 @@ env/
 # Python bytecode & caches
 __pycache__/
 *.py[cod]
+*.pyc
 *$py.class
 .ipynb_checkpoints/
 
@@ -13,7 +14,8 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-# SQLite WAL and lock sidecars
+# SQLite databases, WAL and lock sidecars
+*.db
 *.db-wal
 *.db-shm
 *_staging.db*
