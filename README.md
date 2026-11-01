@@ -3,7 +3,8 @@
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://dwmlab-hrhimxnpqpgyhkvdgg3hne.streamlit.app/)
 
 **Course:** Data Warehousing & Mining (`PCIT10T` / `PCIT10P`) — Semester V  
-**Dataset:** `stock_market_data.csv` (3 Years of Daily NSE Trading Data across 20 Major Indian Stocks & 5 Sectors)
+**Dataset:** `stock_market_data.csv` (3 Years of Daily NSE Trading Data across 20 Major Indian Stocks & 5 Sectors)  
+> **Dataset Note:** `Daily_Return` in `stock_market_data.csv` represents the **intraday open-to-close return** ($((Close - Open) / Open) \times 100$), rather than interday close-to-close returns.
 
 ---
 
@@ -63,13 +64,18 @@ The **Stock Market Analysis System** is a complete end-to-end **Data Warehousing
 
 ## 4. Key Empirical Performance Metrics
 
-- **Linear Regression (Exp 04):**
-  - **Simple Linear Regression (`Open_Price` $\rightarrow$ `Close_Price`):** $R^2 = 0.999706$, $\text{MSE} = 2960.9407$ ($\text{RMSE} = ₹54.41$)
-  - **Multiple Linear Regression (`Open, High, Low, Volume` $\rightarrow$ `Close_Price`):** $R^2 = 0.999951$, $\text{MSE} = 496.1953$ ($\text{RMSE} = ₹22.28$) — achieving an **$83.24\%$ reduction in MSE**.
-- **Classification & Attribute Relevance (Exp 05 & Exp 06):**
-  - **Decision Tree (`criterion='entropy'`, `max_depth=5`):** **$48.38\%$ Test Accuracy** (`0.6284` F1-score on `Medium` regime vs. $33.33\%$ 3-class random baseline).
-  - **Feature Importance & Mutual Information:** `Intraday_Volatility` accounts for **$95.09\%$** of Decision Tree Information Gain and achieves the highest Mutual Information score ($\text{MI} = 0.137970$).
-  - **Gaussian Naive Bayes (70:30 split):** **$35.61\%$ Overall Accuracy** with **$87.86\%$ Recall** on the `Medium` (Neutral) return class.
+- **Purged Walk-Forward Classification Holdout Performance (Exp 05 & Exp 06):**
+
+  | Model | Accuracy (%) | Balanced Acc (%) | Macro F1 | Weighted F1 |
+  | :--- | :---: | :---: | :---: | :---: |
+  | **Tuned Decision Tree (depth=4, leaf=30)** | **37.64%** | **38.29%** | **0.3742** | **0.3735** |
+  | **Random Forest (100 trees, depth=4, leaf=30)** | 36.47% | 37.80% | 0.3635 | 0.3611 |
+  | **Decision Tree Baseline (depth=5)** | 36.37% | 37.56% | 0.3596 | 0.3585 |
+  | **Logistic Regression (scaled, C=0.1)** | 36.16% | 37.68% | 0.3610 | 0.3564 |
+  | **Majority Baseline** | 33.01% | 33.33% | 0.1655 | 0.1639 |
+  | **Gaussian Naive Bayes** | 31.88% | 34.99% | 0.2938 | 0.2843 |
+
+  *Methodology & Leakage Note:* Earlier iterations reported artificially inflated numbers ($R^2 \approx 0.9999$ for Close price regression and $48.38\%$ Decision Tree accuracy) caused by contemporaneous lookahead leakage, since intraday High and Low prices mechanically enclose the Close price. The project now implements rigorous forward next-day return prediction (`Next_Day_Return`) using strictly lagged features with purged date-grouped time-series cross-validation and paired moving-block bootstrap inference. In a 3-class directional return regime, achieving $37.64\%$ test accuracy represents the honest, realistic predictive edge over the ~33% random/majority baseline.
 - **Unsupervised Asset Clustering (Exp 07 & Exp 08):**
   - **K-Means ($K=3$):** WCSS drops from $100.00$ ($K=1$) to $34.2836$ ($K=3$) with a **Silhouette Score of $0.4042$**, segmenting stocks into:
     1. *Blue-Chip Banking & Core Liquidity Leaders (`7` stocks):* `HDFCBANK`, `ICICIBANK`, `INFY`, `ITC`, `KOTAKBANK`, `RELIANCE`, `SBIN`
@@ -102,6 +108,7 @@ pip install -r requirements.txt
 ```bash
 python run_labs_1_2.py
 ```
+> **Note:** `run_labs_1_2.py` isolates its Star, Snowflake, and Constellation schemas into `dwm_academic_warehouse.db` (and removes it after verification) so it no longer touches or overwrites the application dashboard warehouse (`dwm_stock_warehouse.db`).
 
 ### 4. (Optional) Re-generate the 3-Year NSE Stock Dataset
 ```bash
