@@ -121,7 +121,7 @@ def render_streamlit_bootstrap_result(result: pd.DataFrame) -> None:
         "Stocks are paired within each date; contiguous trading-date blocks are resampled "
         "to retain short-range temporal dependence. Compare the 3-, 5- and 10-session results."
     )
-    st.dataframe(result.round(4), use_container_width=True, hide_index=True)
+    st.dataframe(result.round(4), width="stretch", hide_index=True)
     if not result.empty:
         crosses_zero = (result["95% CI Lower (pp)"] <= 0) & (result["95% CI Upper (pp)"] >= 0)
         if crosses_zero.all():

@@ -934,7 +934,7 @@ if nav_selection == "🌐 Market Overview & OLAP":
                 title=f"Turnover Trajectory by {grain} Grain (SQL Roll-Up)",
                 labels={"Total_Volume": "Traded Volume", grain_col: "Period"},
             )
-            st.plotly_chart(apply_fintech_theme(fig_traj, height=400), use_container_width=True)
+            st.plotly_chart(apply_fintech_theme(fig_traj, height=400), width="stretch")
         else:
             st.info("No matching records found for the selected slice/dice criteria.")
 
@@ -949,7 +949,7 @@ if nav_selection == "🌐 Market Overview & OLAP":
                 title="Dynamic Pivot Matrix: Mean Intraday Return (Open-to-Close %) — Sectors vs. Quarters",
                 labels=dict(x="Quarter", y="Sector", color="Intraday Return %"),
             )
-            st.plotly_chart(apply_fintech_theme(fig_piv, height=400), use_container_width=True)
+            st.plotly_chart(apply_fintech_theme(fig_piv, height=400), width="stretch")
         else:
             st.info("No records available to compute the pivot matrix.")
 
@@ -994,7 +994,7 @@ if nav_selection == "🌐 Market Overview & OLAP":
             xaxis_title="Date",
             yaxis_title="Price (₹)",
         )
-        st.plotly_chart(apply_fintech_theme(fig_stock, height=340), use_container_width=True)
+        st.plotly_chart(apply_fintech_theme(fig_stock, height=340), width="stretch")
 
 
 # ===========================================================================
@@ -1024,7 +1024,7 @@ elif nav_selection == "📊 Exploratory Analytics":
             title="Sector Volume Distribution (Cumulative 3Y Turnover)",
         )
         fig_sec_vol.update_layout(showlegend=False)
-        st.plotly_chart(apply_fintech_theme(fig_sec_vol, height=370), use_container_width=True)
+        st.plotly_chart(apply_fintech_theme(fig_sec_vol, height=370), width="stretch")
 
     with r1c2:
         top10_tickers = (
@@ -1043,7 +1043,7 @@ elif nav_selection == "📊 Exploratory Analytics":
             color_discrete_map=SECTOR_COLORS,
             title="Top 10 High-Turnover Equities",
         )
-        st.plotly_chart(apply_fintech_theme(fig_top10, height=370), use_container_width=True)
+        st.plotly_chart(apply_fintech_theme(fig_top10, height=370), width="stretch")
 
     r2c1, r2c2 = st.columns(2)
 
@@ -1060,7 +1060,7 @@ elif nav_selection == "📊 Exploratory Analytics":
         fig_box_ret.update_traces(marker=dict(size=3, opacity=0.45))
         fig_box_ret.add_hline(y=0, line_dash="dot", line_color="#94A3B8")
         fig_box_ret.update_layout(showlegend=False)
-        st.plotly_chart(apply_fintech_theme(fig_box_ret, height=390), use_container_width=True)
+        st.plotly_chart(apply_fintech_theme(fig_box_ret, height=390), width="stretch")
 
     with r2c2:
         fig_box_vol = px.box(
@@ -1073,7 +1073,7 @@ elif nav_selection == "📊 Exploratory Analytics":
         )
         fig_box_vol.update_traces(marker=dict(size=3, opacity=0.45))
         fig_box_vol.update_layout(showlegend=False)
-        st.plotly_chart(apply_fintech_theme(fig_box_vol, height=390), use_container_width=True)
+        st.plotly_chart(apply_fintech_theme(fig_box_vol, height=390), width="stretch")
 
     r3c1, r3c2 = st.columns([1.15, 1.0])
 
@@ -1092,7 +1092,7 @@ elif nav_selection == "📊 Exploratory Analytics":
             labels={"Daily_Return": "Intraday Return (%)"},
         )
         fig_scat.add_hline(y=0, line_dash="dot", line_color="#94A3B8")
-        st.plotly_chart(apply_fintech_theme(fig_scat, height=430), use_container_width=True)
+        st.plotly_chart(apply_fintech_theme(fig_scat, height=430), width="stretch")
 
     with r3c2:
         num_cols = [
@@ -1113,7 +1113,7 @@ elif nav_selection == "📊 Exploratory Analytics":
             zmax=1,
             title="Multi-Factor Correlation Matrix",
         )
-        st.plotly_chart(apply_fintech_theme(fig_corr, height=430), use_container_width=True)
+        st.plotly_chart(apply_fintech_theme(fig_corr, height=430), width="stretch")
 
 
 # ===========================================================================
@@ -1328,7 +1328,7 @@ elif nav_selection == "⚡ Predictive Modeling":
                         ],
                     }
                 )
-                st.dataframe(coef_df, use_container_width=True, hide_index=True, height=210)
+                st.dataframe(coef_df, width="stretch", hide_index=True, height=210)
 
             with st.container(border=True):
                 st.markdown("#### 📊 Out-of-Sample Performance Comparison")
@@ -1337,7 +1337,7 @@ elif nav_selection == "⚡ Predictive Modeling":
                 )
                 st.dataframe(
                     models_bundle["reg_metrics"],
-                    use_container_width=True,
+                    width="stretch",
                     hide_index=True,
                     height=130,
                 )
@@ -1545,7 +1545,7 @@ elif nav_selection == "⚡ Predictive Modeling":
         st.markdown("#### 📋 Out-of-Sample Classification Benchmarks")
         st.dataframe(
             models_bundle["clf_metrics"],
-            use_container_width=True,
+            width="stretch",
             hide_index=True,
             height=230,
         )
@@ -1582,7 +1582,7 @@ elif nav_selection == "⚡ Predictive Modeling":
                 title="Tuned Decision Tree Feature Importance (Entropy Gain)",
                 color_discrete_sequence=["#38BDF8"],
             )
-            st.plotly_chart(apply_fintech_theme(fig_fi, height=300), use_container_width=True)
+            st.plotly_chart(apply_fintech_theme(fig_fi, height=300), width="stretch")
         with f_right:
             fig_rf_fi = px.bar(
                 models_bundle["rf_feature_eval_df"],
@@ -1592,7 +1592,7 @@ elif nav_selection == "⚡ Predictive Modeling":
                 title="Random Forest Feature Importance (Mean Gini Impurity Reduction)",
                 color_discrete_sequence=["#10B981"],
             )
-            st.plotly_chart(apply_fintech_theme(fig_rf_fi, height=300), use_container_width=True)
+            st.plotly_chart(apply_fintech_theme(fig_rf_fi, height=300), width="stretch")
 
 
 # ===========================================================================
@@ -1692,7 +1692,7 @@ elif nav_selection == "🎯 Asset Clusters & Risk":
         )
         fig_km.update_traces(textposition="top center", textfont=dict(size=10, color="#E2E8F0"))
         fig_km.add_hline(y=0, line_dash="dot", line_color="#94A3B8")
-        st.plotly_chart(apply_fintech_theme(fig_km, height=460), use_container_width=True)
+        st.plotly_chart(apply_fintech_theme(fig_km, height=460), width="stretch")
 
     with c_right:
         fig_elbow = px.line(
@@ -1704,11 +1704,11 @@ elif nav_selection == "🎯 Asset Clusters & Risk":
             color_discrete_sequence=["#38BDF8"],
         )
         fig_elbow.add_vline(x=3, line_dash="dash", line_color="#10B981")
-        st.plotly_chart(apply_fintech_theme(fig_elbow, height=235), use_container_width=True)
+        st.plotly_chart(apply_fintech_theme(fig_elbow, height=235), width="stretch")
 
         st.dataframe(
             linkage_df,
-            use_container_width=True,
+            width="stretch",
             hide_index=True,
             height=195,
         )
@@ -1726,7 +1726,7 @@ elif nav_selection == "🎯 Asset Clusters & Risk":
                 "Avg_Volume",
             ]
         ],
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
         column_config={
             "Avg_Daily_Return": st.column_config.NumberColumn("Mean Return (%)", format="%.4f%%"),
@@ -1909,14 +1909,14 @@ elif nav_selection == "🔄 Co-Movement Engine":
                     title="Top 12 Co-Movement Signals Ranked by Lift",
                     color_continuous_scale=["#38BDF8", "#6366F1", "#10B981"],
                 )
-                st.plotly_chart(apply_fintech_theme(fig_lift, height=420), use_container_width=True)
+                st.plotly_chart(apply_fintech_theme(fig_lift, height=420), width="stretch")
 
             with ch_c2:
                 st.dataframe(
                     rules_df[["Antecedent", "Consequent", "support", "confidence", "lift"]]
                     .round(4)
                     .head(25),
-                    use_container_width=True,
+                    width="stretch",
                     hide_index=True,
                     height=420,
                 )
@@ -2070,7 +2070,7 @@ elif nav_selection == "📄 Technical Architecture":
                 },
             ]
         )
-        st.dataframe(schema_summary, use_container_width=True, hide_index=True)
+        st.dataframe(schema_summary, width="stretch", hide_index=True)
 
         st.markdown(
             f"""
@@ -2164,4 +2164,4 @@ elif nav_selection == "📄 Technical Architecture":
             },
         ]
     )
-    st.dataframe(arch_df, use_container_width=True, hide_index=True)
+    st.dataframe(arch_df, width="stretch", hide_index=True)

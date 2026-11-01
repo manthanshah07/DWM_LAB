@@ -230,7 +230,7 @@ def render_streamlit_quality_panel(data: pd.DataFrame, source_path: str | Path |
 
     checks_display = result.checks.copy()
     checks_display["Observed"] = checks_display["Observed"].astype(str)
-    st.dataframe(checks_display, use_container_width=True, hide_index=True)
+    st.dataframe(checks_display, width="stretch", hide_index=True)
     if result.fingerprint_sha256:
         with st.expander("Source fingerprint and dataset scope"):
             st.caption("Fingerprint identifies file bytes; it does not prove source authenticity.")
